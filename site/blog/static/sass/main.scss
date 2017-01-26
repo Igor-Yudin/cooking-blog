@@ -916,7 +916,7 @@
         overflow: hidden;
         padding: 2em 0 2em 0;
         margin-bottom: 0;
-        @include vendor('display', 'flex'); // For flexity
+        //@include vendor('display', 'flex'); // For flexity
 
         .forward, .backward {
             position: absolute;
@@ -991,12 +991,12 @@
             position: relative;
             -webkit-overflow-scrolling: touch;
             padding: 0 2em 0 2em;
-            @include vendor('display', 'flex'); // For flexity
+            //@include vendor('display', 'flex'); // For flexity
         }
 
         article {
-            // display: inline-block; // Initial
-            flex: 1; // For flexity
+            display: inline-block; // Initial
+            //flex: 1; // For flexity
             width: 18em;
             background: #fff;
             text-align: center;

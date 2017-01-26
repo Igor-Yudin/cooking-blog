@@ -1778,11 +1778,7 @@ body.homepage.is-loading #header:after {
   position: relative;
   overflow: hidden;
   padding: 2em 0 2em 0;
-  margin-bottom: 0;
-  display: -moz-flex;
-  display: -webkit-flex;
-  display: -ms-flex;
-  display: flex; }
+  margin-bottom: 0; }
   .carousel .forward, .carousel .backward {
     position: absolute;
     top: 50%;
@@ -1836,13 +1832,9 @@ body.homepage.is-loading #header:after {
     white-space: nowrap;
     position: relative;
     -webkit-overflow-scrolling: touch;
-    padding: 0 2em 0 2em;
-    display: -moz-flex;
-    display: -webkit-flex;
-    display: -ms-flex;
-    display: flex; }
+    padding: 0 2em 0 2em; }
   .carousel article {
-    flex: 1;
+    display: inline-block;
     width: 18em;
     background: #fff;
     text-align: center;
