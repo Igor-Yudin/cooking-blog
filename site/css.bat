@@ -1,0 +1,1 @@
+python blog\static\sass\scss.py main.scss
