@@ -1020,8 +1020,9 @@
             }
 
             p {
+                height: 6em;
                 text-align: center;
-                max-height: 3em; // For overflow handle
+                //max-height: 3em; // For overflow handle
                 overflow-y: hidden; // To make block equal size
             }
         }

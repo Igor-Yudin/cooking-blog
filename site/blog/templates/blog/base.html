@@ -212,5 +212,8 @@
 	<script src="{% static 'js/util.js' %}"></script>
 	<!-- [if lte IE8]><script src="{% static 'js/ie/respond.min.js' %}"></script><![endif]> -->
 	<script src="{% static 'js/main.js' %}"></script>
+
+	{% block javascript %}
+	{% endblock %}
 </body>
 </html>

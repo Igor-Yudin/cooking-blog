@@ -1856,8 +1856,8 @@ body.homepage.is-loading #header:after {
       margin-right: -2em;
       margin-bottom: 3em; }
     .carousel article p {
+      height: 6em;
       text-align: center;
-      max-height: 3em;
       overflow-y: hidden; }
 
 /* Wide */
