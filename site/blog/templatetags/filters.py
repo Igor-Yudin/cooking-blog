@@ -23,3 +23,10 @@ def linebreaksp(text):
 	"""
 	text = text.split('\n')
 	return "".join(["<p>%s</p>" % block for block in text])
+
+@register.filter(name = 'get_model_name')
+def get_class_name(obj):
+	"""
+	Returns object model name.
+	"""
+	return obj.__class__.__name__

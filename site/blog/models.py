@@ -21,6 +21,8 @@ class Paragraph(models.Model):
 	)
 	order = models.IntegerField(blank = True)
 
+# Should use custom file storage system in order not
+# to save all images locally
 class Image(models.Model):
 	image = models.ImageField(upload_to = 'images')
 	post = models.ForeignKey(
