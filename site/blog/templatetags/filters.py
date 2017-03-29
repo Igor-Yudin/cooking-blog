@@ -24,9 +24,16 @@ def linebreaksp(text):
 	text = text.split('\n')
 	return "".join(["<p>%s</p>" % block for block in text])
 
-@register.filter(name = 'get_model_name')
+@register.filter(name = 'get_class_name')
 def get_class_name(obj):
 	"""
 	Returns object model name.
 	"""
 	return obj.__class__.__name__
+
+@register.filter(name = 'addstr')
+def addstr(arg1, arg2):
+	"""
+	Returns arg1 + arg2.
+	"""
+	return str(arg1) + str(arg2)

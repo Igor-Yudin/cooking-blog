@@ -41,12 +41,12 @@ def show_post(request, pk):
 	and shows it.
 	"""
 	post = get_object_or_404(Post, pk = pk)
-	post_fields = list(post.images.all()) + list(post.paragraphs.all())
-	post_fields.sort(key = lambda field: field.order)
+	post_sections_forms = list(post.images.all()) + list(post.paragraphs.all())
+	post_sections_forms.sort(key = lambda field: field.order)
 	return render(request,
 				  'blog/show_post.html',
 				  {'post': post,
-				   'post_fields': post_fields})
+				   'post_sections_forms': post_sections_forms})
 
 def create_post(request):
 	"""
