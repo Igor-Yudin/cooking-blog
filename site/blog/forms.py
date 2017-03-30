@@ -15,4 +15,9 @@ class ImageForm(forms.ModelForm):
 class PostForm(forms.ModelForm):
 	class Meta:
 		model = Post
-		exclude = ('slug',)
+		exclude = ('slug', 'date')
+		widgets = {
+			'name': forms.TextInput(
+				attrs = {'placeholder': 
+					_('Input name of your post')}),
+		}
