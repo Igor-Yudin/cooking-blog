@@ -4,6 +4,8 @@
 
 {% block links %}
 <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+<link rel="stylesheet" href="{% static 'css/font-awesome-animation.min.css' %}">
+
 {% endblock %}
 
 {% block content %}
@@ -27,7 +29,12 @@
 				<div class="field-wrapper">
 					<!-- Field -->
 					{{ field.errors }}
-					{{ field }}
+
+					{% if 'image' in field.html_name %}
+						<input type="file" name="{{ field.html_name }}" id="{{ field.id_for_label }}" class="hidden" required>
+					{% else %}
+						{{ field }}
+					{% endif %}
 
 					<!-- Preview for images -->
 					{% if form|get_class_name == "ImageForm" %}
@@ -193,7 +200,7 @@ String.prototype.capitalize = function() {
 	return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
-function readURL(input, callbackHideOldPreview) {
+function readURL(input, hideAwesomeBtnAndDeanimateLoading) {
 	if (input.files && input.files[0])
 	{
 		var reader = new FileReader();
@@ -201,16 +208,15 @@ function readURL(input, callbackHideOldPreview) {
 		reader.onload = function(e) {
 			var id_preview = '#{input_id}_preview'.replace('{input_id}', input.id);
 			$(id_preview).attr('src', e.target.result)
-				 .width('auto')
-				 .height(200);
+						 .width('auto')
+						 .height(200);
 
 			$(id_preview).parent()
 						 .parent().width('auto')
 								  .height(200)
 								  .css('display', '')
 
-			// Show image if callback is passed
-			typeof callbackHideOldPreview == 'function' && callbackHideOldPreview();
+			typeof hideAwesomeBtnAndDeanimateLoading == 'function' && hideAwesomeBtnAndDeanimateLoading();
 		};
 
 		reader.readAsDataURL(input.files[0]);
@@ -350,11 +356,36 @@ $('.add-img').each(function() {
 
 			// Image load handler
 			$(img).on('change', function() {
-				readURL(this, function() {
+				var selected = false || $(img).val();
+				if(!selected) {
+					$(img).parent()
+						  .find('.preview-wrapper')
+						  .css('display', 'none');
 					$(img).parent()
 						  .find('.awesome-btn-wrapper')
-						  .addClass('hidden');
-				});
+						  .css('display', '');
+					// $(img).parent()
+					// 	  .height('40px');
+				}
+				else {
+					// Animate refresh loading
+					$refreshIcon = $(img).parent().find('.fa-refresh');
+					$previewImg = $(img).parent().find('img');
+					$refreshIcon.addClass('faa-spin animated'); // fa-spin fa-3x fa-fw
+					$previewImg.css('opacity', '0.3');
+
+					// Read url and set show preview
+					readURL(this, function() {
+						// Hide awesome btn
+						$(img).parent()
+							  .find('.awesome-btn-wrapper')
+							  .css('display', 'none');
+
+						// Deanimate refresh loading
+						$refreshIcon.removeClass('faa-spin animated'); // fa-spin fa-3x fa-fw
+						$previewImg.css('opacity', '');
+					});
+				}
 			});
 		}
 	});
@@ -370,17 +401,35 @@ $('.add-prg').each(function() {
 $('.rmv-btn').each(function() {
 	$(this).on('click', function() {
 		var target = $(this).attr('target');
-		$(this).parent().remove();
+		$(this).parent().slideUp('fast', function() {
+			$(this).remove();
+		});
 	});
 });
 
 $(':file').each(function() {
-	$(this).on('change', function() {
-		readURL(this, function() {
-			$(this).parent()
-				   .find('.awesome-btn-wrapper')
-				   .addClass('hidden');
-		});
+	var supportFileReader = false || window.FileReader;
+	if(!supportFileReader)
+		return;
+
+	var img = this;
+	$(img).on('change', function() {
+		var selected = false || $(img).val();
+		if(!selected) {
+			$(img).parent()
+				  .find('.preview-wrapper')
+				  .css('display', 'none');
+			$(img).parent()
+				  .find('.awesome-btn-wrapper')
+				  .css('display', '');
+		}
+		else {
+			readURL(this, function() {
+				$(img).parent()
+					  .find('.awesome-btn-wrapper')
+					  .css('display', 'none');
+			});
+		}
 	});
 });
 
