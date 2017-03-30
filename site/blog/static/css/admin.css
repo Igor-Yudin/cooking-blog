@@ -1,0 +1,301 @@
+@import url("font-awesome.min.css");
+
+
+/* General */
+
+* {
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+}
+
+/* Form */
+
+form {
+	margin: 10px;
+}
+
+/* Header */
+
+h1 {
+	font-size: 50px;
+	color: #555555;
+	font-family: "Times New Roman", sans-serif;
+	margin: 10px;
+}
+
+/* Buttons */
+
+.buttons button,
+.buttons input[type="button"] {
+	padding: 10px;
+	font-size: 16px;
+	color: black;
+	font-weight: bold;
+	font-family: "Times New Roman", serif;
+	text-align: center;
+	border-radius: 5px;
+	background-color: #aaaaaa;
+	border: 0;
+	outline: none;
+	transition: all 0.5s;
+}
+
+.buttons button:hover,
+.buttons input[type="button"]:hover {
+	background-color: #777777;
+	box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.2),
+				0 0 0 1px rgba(0, 0, 0, 0.08);
+	cursor: pointer;
+}
+
+/* Field */
+
+#post div.field-wrapper {
+	border-radius: 5px;
+	background-color: #fafafa;
+	margin-bottom: 10px;
+	width: 100%;
+	max-width: 750px;
+	position: relative;
+	/*min-height: 50px;*/
+	padding: 10px;
+	box-shadow: 1px 1px 7px 0px rgba(0, 0, 0, 0.3);
+}
+
+/* Remove field button */
+
+.field-wrapper .rmv-btn {
+	/*display: inline-block;*/
+	width: 25px;
+	height: 25px;
+	margin-left: 10px;
+	background-color: #777777;
+	color: white;
+	font-size: 20px;
+	font-family: FontAwesome;
+	line-height: 25px;
+	text-align: center;
+	border-radius: 50%;
+	float: right;
+	transition: all 0.5s;
+	position: absolute;
+	right: 10px;
+	top: 10px;
+}
+
+.field-wrapper .rmv-btn:after {
+	content: "\f00d";
+}
+
+.field-wrapper .rmv-btn:hover {
+	background-color: black;
+	cursor: pointer;
+}
+
+/* Image preview */
+
+.field-wrapper .preview-wrapper {
+	padding: 0;
+	/*max-width: calc(100% - 50px);*/
+	width: auto;
+	height: auto;
+	display: inline-block;
+	background-color: black;
+	position: relative;
+}
+
+.field-wrapper .preview-wrapper img {
+	width: 100%;
+	opacity: 1;
+	transition: all 0.5s;
+	position: relative;                  /* Added only to render span on image */
+}
+
+.field-wrapper .preview-wrapper img:hover {
+	/*-webkit-filter: brightness(50%);
+	   -moz-filter: brightness(50%);
+	        filter: brightness(50%);*/
+	opacity: 0.3;
+	cursor: pointer;
+}
+
+.text-on-image {
+	background: transparent;
+	color: white;
+	font-size: 50px;
+	font-family: serif;
+	font-style: italic;
+	cursor: pointer;
+	display: table;
+	height: 100%;
+	width: 100%;
+	left: 0;
+	position: absolute;
+	top: 0;
+	opacity: 1;
+}
+
+.text-on-image span {
+	display: table-cell;
+	text-align: center;
+	vertical-align: middle;
+}
+
+/* DragNDrop input field */
+
+.box__dragndrop,
+.box__uploading,
+.box__success,
+.box__error {
+	display: none;
+}
+
+.box.has-advanced-upload {
+	background-color: white;
+	outline: 2px dashed black;
+	outline-offset: -10px;
+}
+
+.box.has-advanced-upload .box__dragndrop {
+	display: inline;
+}
+
+.box.is-dragover {
+	background-color: grey;
+}
+
+.box.is-uploading .box__input {
+	visibility: none;
+}
+
+.box.is-uploading .box__uploading {
+	display: block;
+}
+
+/* Styling from https://tympanus.net/codrops/2015/09/15/styling-customizing-file-inputs-smart-way/ */
+
+.box__file {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.box__file + label {
+	font-size: 1.25em;
+	font-weight: 700;
+	color: white;
+	background-color: black;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.box__file:focus + label,
+.box__file + label:hover {
+	background-color: red;
+}
+
+.box__file:focus + label {
+	outline: 1px dotted #000;
+	outline: -webkit-focus-ring-color auto 5px;
+}
+
+.box__file + label * {
+	pointer-events: none;
+}
+
+/* My styling */
+
+.box {
+	width: 350px;
+}
+
+.box__file + label {
+	margin: 10px auto;
+	text-align: center;
+	display: block;
+	width: 280px;
+	font-family: FontAwesome;
+}
+
+.box__button {
+	display: block;
+	margin: 0 auto;
+	margin-bottom: 10px;
+}
+
+/* My draggable input */
+
+.fa {
+	font-family: FontAwesome;
+}
+
+.hidden {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	position: absolute;
+	overflow: hidden;
+	z-index: -1;
+}
+
+.awesome-load-image-btn {
+	background-color: #b6deea;
+	width: 100%;
+	height: 100%;
+	padding: 10px;
+	/*line-height: 45px;*/
+	text-align: center;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: all 0.5s;
+}
+
+.awesome-btn-wrapper {
+	width: 150px;
+	height: 40px;
+}
+
+.awesome-load-image-btn:hover {
+	box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.2),
+				0 0 0 1px rgba(0, 0, 0, 0.08);
+	background-color: #38a3c5;
+}
+
+.awesome-load-image-btn > label,
+.preview-wrapper > label {
+	width: 100%;
+	height: 100%;
+}
+
+/* textarea, text */
+
+input[type="text"],
+textarea {
+	padding: 10px;
+	font-family: 'Arial', serif;
+	font-size: 16px;
+	color: black;
+	border: 1px solid rgba(121, 121, 121, 0.7);
+	outline: none;
+	border-radius: 5px;
+	background-color: #ffffff;
+	width: 100%;
+	max-width: calc(100% - 35px);
+	transition: all 0.2s;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+	box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.2),
+				0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+
+input[type="text"]:hover,
+textarea:hover {
+	box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.2),
+				0 0 0 1px rgba(0, 0, 0, 0.08);
+}

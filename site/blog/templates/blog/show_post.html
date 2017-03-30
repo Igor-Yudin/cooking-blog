@@ -1,0 +1,14 @@
+{% load filters %}
+
+{% block content %}
+	<h1>{{ post.name }}</h1>
+
+	{% for form in post_sections_forms %}
+		{% if form|get_class_name == 'Image' %}
+			<img src="{{ form.image.url }}">
+		{% elif form|get_class_name == 'Paragraph' %}
+			<p>{{ form.paragraph }}</p>
+		{% endif %}
+	{% endfor %}
+
+{% endblock %}

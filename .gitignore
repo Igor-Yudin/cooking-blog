@@ -4,3 +4,5 @@ myenv
 db.sqlite3
 .DS_Store
 run.bat
+*.jpg
+*.png

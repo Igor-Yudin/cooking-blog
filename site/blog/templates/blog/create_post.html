@@ -1,0 +1,396 @@
+{% load static %}
+
+{% load filters %}
+
+{% block links %}
+<link rel="stylesheet" href="{% static 'css/admin.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<h1>Create post</h1>
+
+
+<form method="POST" enctype="multipart/form-data">
+	{% csrf_token %}
+
+	<div id="post">
+		{% for field in post_form %}
+			<div class="field-wrapper">
+				{{ field.errors }}
+				{{ field }}
+			</div>
+		{% endfor %}
+
+		{% for form in forms %}
+			{% for field in form %}
+				<div class="field-wrapper">
+					<!-- Field -->
+					{{ field.errors }}
+					{{ field }}
+
+					<!-- Preview for images -->
+					{% if form|get_class_name == "ImageForm" %}
+						<div class="awesome-btn-wrapper">
+							<label for="{{ field.id_for_label }}">
+								<div class="awesome-load-image-btn">
+									<i aria-hidden="true" class="fa fa-picture-o"></i>
+									<strong>Choose a file</strong>
+								</div>
+							</label>
+						</div>
+						<div class="preview-wrapper" style="display: none">
+							<label for="{{ field.id_for_label }}">
+								<span class="text-on-image">
+									<span><i class="fa fa-refresh"></i></span>
+								</span>
+								<img src="#" alt="image" id="{{ field.id_for_label|addstr:'_preview' }}">
+							</label>
+						</div>
+					{% endif %}
+
+					<!-- Remove button -->
+					<span class="rmv-btn" target="{{ field.id_for_label }}"></span>
+				</div>
+			{% endfor %}
+		{% endfor %}
+	</div>
+
+	<input type="hidden" id="fields_counter" name="fields_counter" value="{{ fields_counter }}">
+
+	<div class="buttons">
+		<input type="button" class="add-img" value="Add image">
+		<input type="button" class="add-prg" value="Add paragraph">
+
+		<button type="submit">OK</button>
+	</div>
+</form>
+
+<!-- <form class="box" action="." method="POST" enctype="multipart/form-data">
+	<div class="box__input">
+		<input class="box__file" type="file" name="files[]" id="file" data-multiple-caption="{count} files selected" multiple>
+		<label for="file"><strong>Choose a file</strong><span class="box__dragndrop"> or drag it here</span>.</label>
+		<button class="box__button" type="submit">Upload</button>
+	</div>
+	<div class="box__uploading">Uploading&hellip;</div>
+	<div class="box__success">Done!</div>
+	<div class="box__error">Error!<span></span>.</div>
+</form> -->
+
+
+{% endblock content %}
+
+{% block javascript %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>
+<script>
+
+// function createDraggableUpload(id) {
+// 	// input
+// 	var input = document.createElement('input');
+// 	$(input).attr('type', 'file')
+// 			.attr('id', id)
+// 			.addClass('box__file');
+// 	// icon
+// 	var icon = document.createElement('i');
+// 	$(icon).attr('aria-hidden', true)
+// 		   .addClass('fa fa-picture-o');
+
+// 	// label
+// 	var label = document.createElement('label');
+// 	$(label).attr('for', id)
+// 			.append($('<strong>Choose a file</strong><span class="box__dragndrop"> or drag it here</span>.'));
+// 	// wrapper
+// 	var wrapper = document.createElement('div');
+// 	$(wrapper).append(input)
+// 			  .append(icon)
+// 			  .append(label)
+// 			  .addClass('box__input');
+
+// 	// handlers
+// 	if (isAdvancedUpload) {
+// 		$(input).addClass('has-advanced-upload'); // ...
+// 	}
+// 	return input;
+// }
+
+
+///////////////////////////////////////////////////////////////
+// var isAdvancedUpload = function() {
+// 	var div = document.createElement('div');
+// 	return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window;
+// }
+
+// var $form = $('.box');
+
+// if (isAdvancedUpload) {
+// 	$form.addClass('has-advanced-upload');
+// }
+
+// if (isAdvancedUpload) {
+// 	var droppedFiles = false;
+
+// 	$form.on('drag dragstart dragend dragover dragenter dragleave drop', function(e) {
+// 		e.preventDefault();
+// 		e.stopPropagation();
+// 	})
+
+// 	.on('dragover dragenter', function() {
+// 		$form.addClass('is-dragover');
+// 	})
+
+// 	.on('dragleave dragend drop', function() {
+// 		$form.removeClass('is-dragover');
+// 	})
+
+// 	.on('drop', function(e) {
+// 		droppedFiles = e.originalEvent.dataTransfer.files;
+// 	});
+// }
+
+// $form.on('submit', function(e) {
+// 	if ($form.hasClass('is-uploading')) return false;
+// 	$form.addClass('is-uploading').removeClass('is-erorr');
+
+// 	if (isAdvancedUpload) {
+// 		e.preventDefault();
+
+// 		var ajaxData = new FormData($form.get(0));
+
+// 		if (droppedFiles) {
+// 			$.each( droppedFiles, function(i, file) {
+// 				ajaxData.append( $input.attr('name'), file);
+// 			});
+// 		}
+
+// 		$.ajax({
+// 			url: $form.attr('action'),
+// 			type: $form.attr('method'),
+// 			data: ajaxData,
+// 			dataType: 'json',
+// 			cache: false,
+// 			contentType: false,
+// 			processData: false,
+// 			complete: function() {
+// 				$form.removeClass('is-uploading');
+// 			},
+// 			success: function(data) {
+// 				$form.addClass( data.success == true ? 'is-success' : 'is-error');
+// 				if (!data.success) $errorMsg.text(data.error);
+// 			},
+// 			error: function() {
+// 				console.log('Error for submitting');
+// 			}
+// 		});
+// 	} else {
+// 		//
+// 	}
+// });
+
+///////////////////////////////////////////////////////////////
+
+String.prototype.capitalize = function() {
+	return this.charAt(0).toUpperCase() + this.slice(1);
+}
+
+function readURL(input, callbackHideOldPreview) {
+	if (input.files && input.files[0])
+	{
+		var reader = new FileReader();
+
+		reader.onload = function(e) {
+			var id_preview = '#{input_id}_preview'.replace('{input_id}', input.id);
+			$(id_preview).attr('src', e.target.result)
+				 .width('auto')
+				 .height(200);
+
+			$(id_preview).parent()
+						 .parent().width('auto')
+								  .height(200)
+								  .css('display', '')
+
+			// Show image if callback is passed
+			typeof callbackHideOldPreview == 'function' && callbackHideOldPreview();
+		};
+
+		reader.readAsDataURL(input.files[0]);
+	}
+};
+
+function CreateButtonForInput(inputId) {
+	//icon of file
+	var icon = document.createElement('i');
+	$(icon).attr('aria-hidden', true)
+		   .addClass('fa fa-picture-o');
+
+	var awesomeBtn = document.createElement('div')
+	$(awesomeBtn).append(icon)
+				 .append($('<strong>Choose a file<strong>...'))
+				 .addClass('awesome-load-image-btn');
+
+	// label
+	var label = document.createElement('label');
+	$(label).attr('for', inputId)
+			.append(awesomeBtn);
+
+	var awesomeBtnWrapper = document.createElement('div');
+	$(awesomeBtnWrapper).append(label)
+						.addClass('awesome-btn-wrapper');
+
+	return $(awesomeBtnWrapper);
+}
+
+function AddField(field, type, required) {
+	// Increment counter
+	var counter = $('#fields_counter');
+	var counter_value = parseInt(counter.val());
+	counter.val(counter_value + 1);
+
+	// Set field attributes
+	field.id = 'id_{order}-{type}'.replace('{order}', counter_value)
+								  .replace('{type}', type);
+	field.name = '{order}-{type}'.replace('{order}', counter_value)
+								 .replace('{type}', type);
+	field.required = required;
+
+	// Create label
+	// var label = document.createElement('label');
+	// label.for = field.id;
+	// label.innerText = '{name}:'.replace('{name}',
+	// 									type.capitalize());
+
+	// Create remove button
+	var rmvBtn = document.createElement('span');
+	rmvBtn.classList.add('rmv-btn');
+	rmvBtn.setAttribute("target", field.id);
+	$(rmvBtn).on('click', function() {
+		$(this).parent().slideUp("fast", function() {
+			$(this).remove();
+		});
+	});
+
+	// Create field wrapper
+	var field_wrapper = document.createElement('div');
+	field_wrapper.classList.add('field-wrapper');
+	$(field_wrapper)
+					.append(field)
+					.append(rmvBtn)
+					.css('display', 'none');
+
+	// Set height for image element to animate it
+	// smoothly.
+	if (type == 'image')
+	{
+		$(field_wrapper).height('60px');
+	}
+
+	// Add field
+	$('.field-wrapper:last').after(field_wrapper);
+	$('.field-wrapper:last').slideDown('fast', function() {
+		// Unset height
+		$(this).height('');
+	});
+};
+
+function CreatePreview(inputId)
+{
+	var preview = document.createElement('img');
+	preview.id = "{input_id}_preview".replace('{input_id}', inputId);
+	$(preview).attr('src', '#')
+			  .attr('alt', 'image');
+
+	// span for text
+	var spanTextOnImage = document.createElement('span');
+	spanTextOnImage.innerHTML = '<i class="fa fa-refresh"></i>';
+	var spanWrapper = document.createElement('span');
+	$(spanWrapper).append(spanTextOnImage)
+				  .addClass('text-on-image');
+
+	// label wrapper for img-preview to make it clickable
+	var label = document.createElement('label');
+	$(label).attr('for', inputId)
+			.append(spanWrapper)
+			.append(preview);
+
+	// preview wrapper for darken
+	var previewWrapper = document.createElement('div');
+	$(previewWrapper).append(label)
+					 .addClass('preview-wrapper')
+					 .css('display', 'none');
+
+	// Listener for IE
+	$(preview).mousedown(function(e) {
+		if (e.button == 0) {
+			var id = '#{id}'.replace('{id}', inputId);
+			$(id).trigger('click');
+		}
+	});
+
+	return $(previewWrapper);
+}
+
+$('.add-img').each(function() {
+	$(this).on('click', function() {
+		var img = document.createElement('input');
+		img.type = 'file';
+		img.setAttribute('accept', 'image/gif, image/jpeg, image/jpg, image/png');
+
+		AddField(img, 'image', true);
+
+		if (window.FileReader)
+		{
+			// preview
+			$preview = CreatePreview(img.id);
+			$(img).after($preview);
+
+			// Hide image input, show button
+			$(img).addClass('hidden');
+			$awesomeBtn = CreateButtonForInput(img.id);
+			$(img).after($awesomeBtn);
+
+			// Image load handler
+			$(img).on('change', function() {
+				readURL(this, function() {
+					$(img).parent()
+						  .find('.awesome-btn-wrapper')
+						  .addClass('hidden');
+				});
+			});
+		}
+	});
+});
+
+$('.add-prg').each(function() {
+	$(this).on('click', function() {
+		var prg = document.createElement('textarea');
+		AddField(prg, 'paragraph', true);
+	});
+});
+
+$('.rmv-btn').each(function() {
+	$(this).on('click', function() {
+		var target = $(this).attr('target');
+		$(this).parent().remove();
+	});
+});
+
+$(':file').each(function() {
+	$(this).on('change', function() {
+		readURL(this, function() {
+			$(this).parent()
+				   .find('.awesome-btn-wrapper')
+				   .addClass('hidden');
+		});
+	});
+});
+
+$('img').each(function() {
+	$(this).mousedown(function(e) {
+		if (e.button == 0) {
+			var inputId = '#{id}'.replace('{id}', e.button.target.id.replace('_preview', ''));
+			$(e.target.id).trigger('click');
+		}
+	})
+});
+</script>
+{% endblock %}
